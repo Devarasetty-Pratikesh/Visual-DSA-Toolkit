@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { LearningAcademy } from '../components/LearningAcademy';
-import { Play, RotateCcw, BookOpen, Layers } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 interface HanoiMove {
   fromPeg: number;
@@ -23,11 +23,6 @@ export const RecursionVisualizer: React.FC = () => {
   const [recLog, setRecLog] = useState('Select an algorithm and click play to begin.');
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Initialize selected recursion states
-  useEffect(() => {
-    resetRecursion();
-  }, [selectedAlgo, numDisks]);
 
   const resetRecursion = () => {
     setIsPlaying(false);
@@ -62,6 +57,13 @@ export const RecursionVisualizer: React.FC = () => {
     }
   };
 
+  // Initialize selected recursion states
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    resetRecursion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAlgo, numDisks]);
+
   // Play hanoi moves step-by-step
   useEffect(() => {
     if (isPlaying && selectedAlgo === 'Hanoi') {
@@ -95,7 +97,7 @@ export const RecursionVisualizer: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPlaying, hanoiMoves, selectedAlgo]);
+  }, [isPlaying, hanoiMoves, selectedAlgo, incrementVisualizations]);
 
   // Factorial stack frames trace helper
   const factorialFrames = [
@@ -127,7 +129,7 @@ export const RecursionVisualizer: React.FC = () => {
           {['Hanoi', 'Factorial', 'Fibonacci'].map((algo) => (
             <button
               key={algo}
-              onClick={() => setSelectedAlgo(algo as any)}
+              onClick={() => setSelectedAlgo(algo as 'Hanoi' | 'Factorial' | 'Fibonacci')}
               className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 selectedAlgo === algo ? 'bg-indigo-600 text-white shadow shadow-indigo-500/20' : 'text-slate-400 hover:text-white'
               }`}

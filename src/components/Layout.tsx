@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Sidebar } from './Sidebar';
 import { useAppStore } from '../store/useAppStore';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,7 @@ import { SettingsPage } from '../pages/SettingsPage';
 export const Layout: React.FC = () => {
   const { activePage } = useAppStore();
   const vantaRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const vantaEffectRef = useRef<any>(null);
 
   useEffect(() => {
@@ -26,8 +27,10 @@ export const Layout: React.FC = () => {
     const initVanta = () => {
       if (vantaEffectRef.current) return;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).VANTA && vantaRef.current) {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           vantaEffectRef.current = (window as any).VANTA.CLOUDS2({
             el: vantaRef.current,
             mouseControls: true,

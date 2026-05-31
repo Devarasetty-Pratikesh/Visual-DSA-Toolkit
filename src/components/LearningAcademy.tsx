@@ -12,7 +12,6 @@ import {
   AlertCircle,
   CheckCircle,
   HelpCircle as HintIcon,
-  ChevronRight,
   Trophy
 } from 'lucide-react';
 
@@ -21,7 +20,7 @@ interface LearningAcademyProps {
   category: string;
 }
 
-export const LearningAcademy: React.FC<LearningAcademyProps> = ({ algoName, category }) => {
+export const LearningAcademy: React.FC<LearningAcademyProps> = ({ algoName }) => {
   const { completeChallenge } = useAppStore();
 
   const [activeTab, setActiveTab] = useState<'pseudocode' | 'quiz' | 'tutor'>('pseudocode');
@@ -31,7 +30,6 @@ export const LearningAcademy: React.FC<LearningAcademyProps> = ({ algoName, cate
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [quizAttempts, setQuizAttempts] = useState(0);
 
   // AI Tutor States
   const [chatMessages, setChatMessages] = useState<{ sender: 'user' | 'tutor'; text: string }[]>([]);
@@ -48,10 +46,10 @@ export const LearningAcademy: React.FC<LearningAcademyProps> = ({ algoName, cate
 
   // Reset quiz states when algorithm changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedOpt(null);
     setIsQuizSubmitted(false);
     setShowHint(false);
-    setQuizAttempts(0);
 
     // Initialize chat messages with a tailored greeting
     setChatMessages([
@@ -83,7 +81,6 @@ export const LearningAcademy: React.FC<LearningAcademyProps> = ({ algoName, cate
     if (selectedOpt === null || !quiz) return;
     
     setIsQuizSubmitted(true);
-    setQuizAttempts((a) => a + 1);
 
     if (selectedOpt === quiz.correctIdx) {
       // Correct! Track challenge completion in Zustand store

@@ -7,10 +7,7 @@ import {
   SkipForward,
   SkipBack,
   Sliders,
-  Sparkles,
   BookOpen,
-  Send,
-  Terminal,
   HelpCircle
 } from 'lucide-react';
 import {
@@ -49,7 +46,7 @@ export const SortingVisualizer: React.FC = () => {
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [customInput, setCustomInput] = useState('');
-  const [showLearning, setShowLearning] = useState(true);
+  const [showLearning] = useState(true);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -65,11 +62,12 @@ export const SortingVisualizer: React.FC = () => {
   // Compile steps upon array or algorithm change
   useEffect(() => {
     if (array.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       generateRandomArray();
       return;
     }
 
-    let generatedSteps: SortStep[] = [];
+    let generatedSteps: SortStep[];
     switch (selectedAlgo) {
       case 'Bubble Sort':
         generatedSteps = generateBubbleSortSteps(array);
@@ -101,6 +99,7 @@ export const SortingVisualizer: React.FC = () => {
 
     setSteps(generatedSteps);
     setCurrentStepIdx(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [array, selectedAlgo]);
 
   // 3. Playback Management
@@ -136,6 +135,7 @@ export const SortingVisualizer: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, steps, speed]);
 
   const handleCustomInputSubmit = (e: React.FormEvent) => {

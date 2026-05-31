@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Plus, Trash2, RotateCcw, Database, ArrowRight, LayoutGrid, ChevronsRight } from 'lucide-react';
+import { Plus, Trash2, RotateCcw, ArrowRight, ChevronsRight } from 'lucide-react';
 import { LearningAcademy } from '../components/LearningAcademy';
 
 export const DataStructuresVisualizer: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { Sliders, RotateCcw, ShieldCheck, Heart } from 'lucide-react';
+import { Sliders, RotateCcw, ShieldCheck } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { stats, resetProgress, speed, setSpeed } = useAppStore();

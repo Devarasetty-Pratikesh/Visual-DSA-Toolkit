@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { LearningAcademy } from '../components/LearningAcademy';
 import {
-  Play,
   RotateCcw,
-  BookOpen,
   Plus,
   Trash2,
   Search,
-  BookOpenCheck,
   TrendingDown
 } from 'lucide-react';
 
@@ -32,28 +29,6 @@ export const TreeVisualizer: React.FC = () => {
   const [searchingNode, setSearchingNode] = useState<number | null>(null);
   const [searchFound, setSearchFound] = useState<boolean | null>(null);
   const [rotationLog, setRotationLog] = useState<string>('Ready for tree operations.');
-
-  // Pre-load default balanced elements for stellar first-look impression
-  useEffect(() => {
-    resetToDefaultTree();
-  }, [treeType]);
-
-  const resetToDefaultTree = () => {
-    setRoot(null);
-    setActiveTraversingNodes([]);
-    setTraversalPath([]);
-    setSearchingNode(null);
-    setSearchFound(null);
-    
-    // Add default values to build a nice initial BST/AVL
-    const defaults = treeType === 'BST' ? [15, 8, 24, 4, 11, 20, 30] : [20, 10, 30, 5, 15, 25, 35];
-    let tempRoot: TreeNode | null = null;
-    defaults.forEach((val) => {
-      tempRoot = insertNode(tempRoot, val);
-    });
-    setRoot(tempRoot);
-    setRotationLog(`Initialized default ${treeType} Tree.`);
-  };
 
   // Height helper
   const getHeight = (node: TreeNode | null): number => {
@@ -138,6 +113,31 @@ export const TreeVisualizer: React.FC = () => {
 
     return node;
   };
+
+  const resetToDefaultTree = () => {
+    setRoot(null);
+    setActiveTraversingNodes([]);
+    setTraversalPath([]);
+    setSearchingNode(null);
+    setSearchFound(null);
+    
+    // Add default values to build a nice initial BST/AVL
+    const defaults = treeType === 'BST' ? [15, 8, 24, 4, 11, 20, 30] : [20, 10, 30, 5, 15, 25, 35];
+    let tempRoot: TreeNode | null = null;
+    defaults.forEach((val) => {
+      tempRoot = insertNode(tempRoot, val);
+    });
+    setRoot(tempRoot);
+    setRotationLog(`Initialized default ${treeType} Tree.`);
+  };
+
+  // Pre-load default balanced elements for stellar first-look impression
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    resetToDefaultTree();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [treeType]);
+
 
   // BST deletion helper
   const minValueNode = (node: TreeNode): TreeNode => {

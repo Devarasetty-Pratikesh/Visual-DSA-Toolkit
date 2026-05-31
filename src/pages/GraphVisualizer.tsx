@@ -3,10 +3,7 @@ import { useAppStore } from '../store/useAppStore';
 import { LearningAcademy } from '../components/LearningAcademy';
 import {
   Play,
-  RotateCcw,
-  BookOpen,
-  Plus,
-  Trash2
+  RotateCcw
 } from 'lucide-react';
 import { GraphNode, GraphEdge } from '../types';
 
@@ -35,15 +32,15 @@ export const GraphVisualizer: React.FC = () => {
 
   // Animation states
   const [visitedNodes, setVisitedNodes] = useState<string[]>([]);
-  const [activeEdgeId, setActiveEdgeId] = useState<string | null>(null);
   const [finalPathNodes, setFinalPathNodes] = useState<string[]>([]);
   const [distanceMap, setDistanceMap] = useState<Record<string, number>>({});
   const [runLog, setRunLog] = useState('Click canvas to add nodes. Select a node to link it to another.');
 
-  // Initialize a pre-loaded graph representing a navigation routing network for high visual appeal on launch!
-  useEffect(() => {
-    loadDefaultGraph();
-  }, []);
+  const resetAnimationStates = () => {
+    setVisitedNodes([]);
+    setFinalPathNodes([]);
+    setDistanceMap({});
+  };
 
   const loadDefaultGraph = () => {
     const defaultNodes: GraphNode[] = [
@@ -72,12 +69,12 @@ export const GraphVisualizer: React.FC = () => {
     setRunLog('Loaded default routing graph.');
   };
 
-  const resetAnimationStates = () => {
-    setVisitedNodes([]);
-    setActiveEdgeId(null);
-    setFinalPathNodes([]);
-    setDistanceMap({});
-  };
+  // Initialize a pre-loaded graph representing a navigation routing network for high visual appeal on launch!
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDefaultGraph();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 2. Editor operations
   const handleCanvasClick = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -197,7 +194,6 @@ export const GraphVisualizer: React.FC = () => {
       const parentMap: Record<string, string> = {};
 
       const stepTrace: string[] = [];
-      const edgeTrace: string[] = [];
 
       while (queueStack.length > 0) {
         const curr = isBFS ? queueStack.shift()! : queueStack.pop()!;

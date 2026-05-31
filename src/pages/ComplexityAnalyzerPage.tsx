@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Search, ShieldCheck } from 'lucide-react';
+import { Clock, Search } from 'lucide-react';
 
 export const ComplexityAnalyzerPage: React.FC = () => {
   const [filterQuery, setFilterQuery] = useState('');

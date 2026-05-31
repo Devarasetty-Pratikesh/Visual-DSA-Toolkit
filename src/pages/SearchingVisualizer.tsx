@@ -8,9 +8,7 @@ import {
   SkipForward,
   SkipBack,
   Sliders,
-  BookOpen,
-  Send,
-  HelpCircle
+  BookOpen
 } from 'lucide-react';
 import {
   SearchStep,
@@ -63,6 +61,7 @@ export const SearchingVisualizer: React.FC = () => {
   // Compile search steps
   useEffect(() => {
     if (array.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       generateRandomArray();
       return;
     }
@@ -73,7 +72,7 @@ export const SearchingVisualizer: React.FC = () => {
       return;
     }
 
-    let generatedSteps: SearchStep[] = [];
+    let generatedSteps: SearchStep[];
     switch (selectedAlgo) {
       case 'Linear Search':
         generatedSteps = generateLinearSearchSteps(array, target);
@@ -96,6 +95,7 @@ export const SearchingVisualizer: React.FC = () => {
 
     setSteps(generatedSteps);
     setCurrentStepIdx(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [array, selectedAlgo, target]);
 
   // Interval playback
@@ -130,6 +130,7 @@ export const SearchingVisualizer: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, steps, speed]);
 
   const activeStep = steps[currentStepIdx] || {

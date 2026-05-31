@@ -13,7 +13,6 @@ import {
   Settings,
   Menu,
   X,
-  Code,
   Trophy,
   Database
 } from 'lucide-react';
@@ -63,6 +62,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Sidebar Container */}
       <AnimatePresence>
+        {/* eslint-disable-next-line no-constant-binary-expression */}
         {(isOpen || true) && (
           <motion.aside
             initial={{ x: -260 }}

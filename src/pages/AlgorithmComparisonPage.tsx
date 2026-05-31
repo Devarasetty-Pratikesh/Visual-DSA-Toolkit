@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useAppStore } from '../store/useAppStore';
-import { Play, RotateCcw, Sliders, Columns, Swords } from 'lucide-react';
+import { Play, Columns, Swords } from 'lucide-react';
 import {
   SortStep,
   generateBubbleSortSteps,
@@ -17,13 +16,10 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
-  Cell
+  Legend
 } from 'recharts';
 
 export const AlgorithmComparisonPage: React.FC = () => {
-  const { speed, setSpeed } = useAppStore();
-
   const sortingAlgos = [
     'Bubble Sort',
     'Selection Sort',
@@ -45,26 +41,8 @@ export const AlgorithmComparisonPage: React.FC = () => {
   const [idx1, setIdx1] = useState(0);
   const [idx2, setIdx2] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [battleComplete, setBattleComplete] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    generateSharedArray();
-  }, [algo1, algo2, arraySize]);
-
-  const generateSharedArray = () => {
-    setIsPlaying(false);
-    setBattleComplete(false);
-    const newArr = Array.from({ length: arraySize }, () => Math.floor(Math.random() * 75) + 15);
-    setSharedArray(newArr);
-
-    // Pre-calculate steps
-    setSteps1(getStepsForAlgo(algo1, newArr));
-    setSteps2(getStepsForAlgo(algo2, newArr));
-    setIdx1(0);
-    setIdx2(0);
-  };
 
   const getStepsForAlgo = (name: string, arr: number[]): SortStep[] => {
     switch (name) {
@@ -77,6 +55,24 @@ export const AlgorithmComparisonPage: React.FC = () => {
       default: return generateBubbleSortSteps(arr);
     }
   };
+
+  const generateSharedArray = () => {
+    setIsPlaying(false);
+    const newArr = Array.from({ length: arraySize }, () => Math.floor(Math.random() * 75) + 15);
+    setSharedArray(newArr);
+
+    // Pre-calculate steps
+    setSteps1(getStepsForAlgo(algo1, newArr));
+    setSteps2(getStepsForAlgo(algo2, newArr));
+    setIdx1(0);
+    setIdx2(0);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    generateSharedArray();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [algo1, algo2, arraySize]);
 
   // Play both simulations side-by-side
   useEffect(() => {
@@ -102,7 +98,6 @@ export const AlgorithmComparisonPage: React.FC = () => {
 
         if (!active) {
           setIsPlaying(false);
-          setBattleComplete(true);
           clearInterval(timerRef.current!);
         }
       }, 180);
@@ -118,7 +113,6 @@ export const AlgorithmComparisonPage: React.FC = () => {
   const handleRunBattle = () => {
     setIdx1(0);
     setIdx2(0);
-    setBattleComplete(false);
     setIsPlaying(true);
   };
 
